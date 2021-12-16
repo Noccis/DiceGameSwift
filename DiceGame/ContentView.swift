@@ -15,7 +15,7 @@ struct ContentView: View {
     @State var showing100Sheet = false
     @State var feftotalSum = 0
     @State var rounds = 0
-    @State var playerSums: [Int] = [0, 0, 0, 0, 0, 0]
+    @State var playerSums: [Int] = [0, 0, 0]
     @State var currentPlayer = 0
     
     
@@ -26,7 +26,7 @@ struct ContentView: View {
             Color(red: 71/256, green: 110/256, blue: 99/256).ignoresSafeArea()
             
             VStack {
-                Text("Sum:\(currentSum)")
+                Text("Player: \(currentPlayer)Sum:\(currentSum)")
                     .font(.title)
                     .foregroundColor(.white)
                     .fontWeight(.bold)
@@ -79,24 +79,43 @@ struct ContentView: View {
         
         if currentSum > 21 {
             showingBustSheet = true
-            rounds += 1
+           
+            if currentPlayer == playerSums.count - 1 {
+               
+                rounds += 1
+                currentPlayer = 0
+            }else{
+                currentPlayer += 1
+            }
+           
         }
     }
     
     func stop() {
         playerSums[currentPlayer] += currentSum
-        rounds += 1
-        currentSum = 0
-        if playerSums[currentPlayer] >= 30 {
+        
+        if playerSums[currentPlayer] >= 50 {
         showing100Sheet = true
             
+        }else if currentPlayer == playerSums.count - 1 {
+            
+           currentPlayer = 0
+            rounds += 1
+        }else{
+            currentPlayer += 1
         }
+        
+        currentSum = 0
+        
+        
     }
     
     func resetGame() {
         currentSum = 0
         playerSums[currentPlayer] = 0
-        rounds = 0 
+        rounds = 0
+        currentPlayer = 0
+        
         
     }
 }
